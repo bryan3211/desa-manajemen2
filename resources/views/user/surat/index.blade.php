@@ -59,6 +59,14 @@
                                             <td>{{ $s->created_at->format('d-m-Y H:i') }}</td>
                                             <td>
                                                 <a href="{{ route('user.surat.show', $s->id) }}" class="btn btn-sm btn-outline-primary"><i class="ti ti-eye me-1"></i>Lihat</a>
+                                                @if(in_array($s->status_verifikasi, ['pending', 'belum_verifikasi']))
+                                                    <a href="{{ route('user.surat.edit', $s->id) }}" class="btn btn-sm btn-outline-warning ms-1"><i class="ti ti-edit me-1"></i>Edit</a>
+                                                    <form method="POST" action="{{ route('user.surat.destroy', $s->id) }}" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengajuan ini?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger ms-1"><i class="ti ti-trash me-1"></i>Hapus</button>
+                                                    </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @empty

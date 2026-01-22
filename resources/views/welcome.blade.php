@@ -195,52 +195,6 @@
     </div>
 </section>
 
-<!-- [ Statistik ] -->
-<section class="py-5" id="statistics-section">
-    <div class="container text-center mb-5">
-        <h5 class="text-light">Data Statistik</h5>
-        <h2 class="fw-bold mb-3 text-light">Aktivitas Sistem Desa</h2>
-    </div>
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-card-dark p-4 rounded-3 text-center h-100 border border-secondary">
-                    <div class="stat-icon mb-3">
-                        <i class="ti ti-users fs-1 text-light"></i>
-                    </div>
-                    <h6 class="text-light mb-3">Total Warga Terdaftar</h6>
-                    <h2 class="text-light fw-bold stat-value" data-stat="total_users">
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    </h2>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-card-dark p-4 rounded-3 text-center h-100 border border-secondary">
-                    <div class="stat-icon mb-3">
-                        <i class="ti ti-file-check fs-1 text-light"></i>
-                    </div>
-                    <h6 class="text-light mb-3">Total Pengajuan Surat</h6>
-                    <h2 class="text-light fw-bold stat-value" data-stat="total_surats">
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    </h2>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-card-dark p-4 rounded-3 text-center h-100 border border-secondary">
-                    <div class="stat-icon mb-3">
-                        <i class="ti ti-alert-circle fs-1 text-light"></i>
-                    </div>
-                    <h6 class="text-light mb-3">Total Laporan Masuk</h6>
-                    <h2 class="text-light fw-bold stat-value" data-stat="total_pengaduans">
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    </h2>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-card-dark p-4 rounded-3 text-center h-100 border border-secondary">
-                    <div class="stat-icon mb-3">
-                        <i class="ti ti-message-circle fs-1 text-light"></i>
-                    </div>
                     <h6 class="text-light mb-3">Total Ulasan</h6>
                     <h2 class="text-light fw-bold stat-value" data-stat="total_reviews">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

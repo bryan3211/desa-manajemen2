@@ -229,6 +229,217 @@ class SuratController extends Controller
         return view('user.surat.show', compact('surat'));
     }
 
+    public function edit($id)
+    {
+        $surat = Surat::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+
+        // Only allow edit if status is pending or belum_verifikasi
+        if (!in_array($surat->status_verifikasi, ['pending', 'belum_verifikasi'])) {
+            return redirect()->route('user.surat.index')->with('error', 'Pengajuan surat tidak dapat diedit karena sudah dalam proses verifikasi.');
+        }
+
+        $biodata = \App\Models\Biodata::where('user_id', Auth::id())->first();
+        $type = $surat->jenis_surat;
+
+        return view('user.surat.edit', compact('surat', 'type', 'biodata'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $surat = Surat::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+
+        // Only allow update if status is pending or belum_verifikasi
+        if (!in_array($surat->status_verifikasi, ['pending', 'belum_verifikasi'])) {
+            return redirect()->route('user.surat.index')->with('error', 'Pengajuan surat tidak dapat diupdate karena sudah dalam proses verifikasi.');
+        }
+
+        $request->validate([
+            'jenis_surat' => 'required|string',
+            'attachment' => 'sometimes|file|mimes:pdf,jpg,jpeg,png|max:5120',
+        ]);
+
+        $biodata = \App\Models\Biodata::where('user_id', Auth::id())->first();
+        $jenis = strtolower($request->jenis_surat);
+        $data = [];
+
+        // type-specific validation and data extraction (same as store)
+        if ($jenis == 'ktp') {
+            $v = $request->validate([
+                'tempat_lahir' => 'nullable|string',
+                'tanggal_lahir' => 'nullable|date',
+                'alamat' => 'nullable|string',
+            ]);
+            $data = $v;
+            $data['nik'] = $biodata->nik ?? '';
+            $data['nama_lengkap'] = $biodata->nama_lengkap ?? '';
+        } elseif ($jenis == 'sktm') {
+            $v = $request->validate([
+                'tujuan' => 'required|string',
+                'keterangan' => 'nullable|string',
+                'jumlah_anggota_keluarga' => 'nullable|integer',
+                'alamat' => 'nullable|string',
+            ]);
+            $data = $v;
+        } elseif ($jenis == 'domisili') {
+            $v = $request->validate([
+                'alamat' => 'required|string',
+                'keterangan' => 'nullable|string',
+                'tujuan' => 'nullable|string',
+            ]);
+            $data = $v;
+        } elseif ($jenis == 'izin_usaha') {
+            $v = $request->validate([
+                'nama_usaha' => 'required|string',
+                'jenis_usaha' => 'required|string',
+                'alamat_usaha' => 'required|string',
+                'modal_usaha' => 'nullable|string',
+                'keterangan' => 'nullable|string',
+            ]);
+            $data = $v;
+        } elseif ($jenis == 'surat_kelahiran') {
+            $v = $request->validate([
+                'nama_bayi' => 'required|string',
+                'tanggal_lahir' => 'required|date',
+                'tempat_lahir' => 'required|string',
+                'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                'nama_ibu' => 'required|string',
+                'nik_ibu' => 'nullable|digits:16',
+                'nama_ayah' => 'required|string',
+                'nik_ayah' => 'nullable|digits:16',
+            ]);
+            $data = $v;
+        } elseif ($jenis == 'surat_kematian') {
+            $v = $request->validate([
+                'nama_almarhum' => 'required|string',
+                'nik_almarhum' => 'nullable|digits:16',
+                'tanggal_meninggal' => 'required|date',
+                'tempat_meninggal' => 'required|string',
+                'penyebab_kematian' => 'nullable|string',
+                'usia' => 'nullable|integer',
+            ]);
+            $data = $v;
+        } elseif ($jenis == 'surat_pindah') {
+            $v = $request->validate([
+                'alamat_asal' => 'required|string',
+                'desa_tujuan' => 'required|string',
+                'kecamatan_tujuan' => 'required|string',
+                'alasan_pindah' => 'nullable|string',
+                'jumlah_anggota_keluarga' => 'nullable|integer',
+            ]);
+            $data = $v;
+        } elseif ($jenis == 'surat_rekomendasi') {
+            $v = $request->validate([
+                'tujuan' => 'required|string',
+                'keperluan' => 'required|string',
+                'keterangan' => 'nullable|string',
+            ]);
+            $data = $v;
+        } elseif ($jenis == 'kk_kia') {
+            $v = $request->validate([
+                'jenis_dokumen' => 'required|in:KK,KIA',
+                'nomor_kk' => 'nullable|string',
+                'nik_kepala_keluarga' => 'nullable|digits:16',
+                'tujuan' => 'required|string',
+                'keterangan' => 'nullable|string',
+            ]);
+            $data = $v;
+        } elseif ($jenis == 'akta_kelahiran') {
+            $v = $request->validate([
+                'nama_anak' => 'required|string',
+                'tanggal_lahir' => 'required|date',
+                'tempat_lahir' => 'required|string',
+                'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                'nama_ibu' => 'required|string',
+                'nik_ibu' => 'nullable|digits:16',
+                'nama_ayah' => 'required|string',
+                'nik_ayah' => 'nullable|digits:16',
+                'hari_melapor' => 'required|date',
+                'keterangan' => 'nullable|string',
+            ]);
+            $data = $v;
+        } elseif ($jenis == 'izin_imb') {
+            $v = $request->validate([
+                'alamat_lahan' => 'required|string',
+                'luas_tanah' => 'required|string',
+                'jenis_bangunan' => 'required|string',
+                'luas_bangunan' => 'required|string',
+                'fungsi_bangunan' => 'required|string',
+                'keterangan' => 'nullable|string',
+            ]);
+            $data = $v;
+            $data['nama_pemohon'] = $biodata->nama_lengkap ?? '';
+            $data['nik_pemohon'] = $biodata->nik ?? '';
+        } elseif ($jenis == 'pembetulan_data') {
+            $v = $request->validate([
+                'jenis_data' => 'required|string',
+                'data_lama' => 'required|string',
+                'data_baru' => 'required|string',
+                'alasan_pembetulan' => 'required|string',
+                'keterangan' => 'nullable|string',
+            ]);
+            $data = $v;
+        }
+
+        $attachmentPath = $surat->attachment;
+        if ($request->hasFile('attachment')) {
+            // Delete old attachment if exists
+            if ($surat->attachment) {
+                Storage::disk('public')->delete('surat/' . $surat->attachment);
+            }
+            $file = $request->file('attachment');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('surat', $fileName, 'public');
+            $attachmentPath = $fileName;
+        }
+
+        $surat->update([
+            'jenis_surat' => $jenis,
+            'data' => $data,
+            'attachment' => $attachmentPath,
+        ]);
+
+        // Log surat update
+        ActivityLog::log(
+            'update',
+            'Updated a surat application',
+            Auth::id(),
+            $surat,
+            null,
+            ['jenis_surat' => $this->getNamaJenisSurat($jenis)]
+        );
+
+        return redirect()->route('user.surat.index')->with('success', 'Pengajuan surat berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
+        $surat = Surat::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+
+        // Only allow delete if status is pending or belum_verifikasi
+        if (!in_array($surat->status_verifikasi, ['pending', 'belum_verifikasi'])) {
+            return redirect()->route('user.surat.index')->with('error', 'Pengajuan surat tidak dapat dihapus karena sudah dalam proses verifikasi.');
+        }
+
+        // Delete attachment if exists
+        if ($surat->attachment) {
+            Storage::disk('public')->delete('surat/' . $surat->attachment);
+        }
+
+        // Log surat deletion
+        ActivityLog::log(
+            'delete',
+            'Deleted a surat application',
+            Auth::id(),
+            $surat,
+            null,
+            ['jenis_surat' => $this->getNamaJenisSurat($surat->jenis_surat)]
+        );
+
+        $surat->delete();
+
+        return redirect()->route('user.surat.index')->with('success', 'Pengajuan surat berhasil dihapus.');
+    }
+
     // ========== ADMIN ==========
     public function adminIndex(Request $request)
     {

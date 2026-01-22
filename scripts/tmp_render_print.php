@@ -13,10 +13,10 @@ if (!$surat) {
     exit(1);
 }
 
-// Ensure an admin user is authenticated
+// Pastikan pengguna admin terautentikasi
 $admin = \App\Models\User::where('role', 'admin')->first();
 if (!$admin) {
-    // create a minimal admin user if none exists (will persist)
+    // Buat pengguna admin minimal jika tidak ada (akan bertahan)
     $admin = \App\Models\User::create([
         'name' => 'Auto Admin',
         'email' => 'admin+auto@example.test',

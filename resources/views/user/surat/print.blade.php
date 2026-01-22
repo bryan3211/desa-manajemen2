@@ -15,6 +15,10 @@
             margin: 0;
             font-size: 13px;
             line-height: 1.4;
+            max-width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            box-sizing: border-box;
         }
 
         .header { display:flex; align-items:flex-start; margin-bottom: 10px; }
@@ -34,9 +38,11 @@
             text-align:justify;
             margin:10px 0;
             text-indent: 30px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
-        .kv { width:100%; margin:8px 0; }
-        .kv td { vertical-align:top; padding:1px 4px; font-size:13px; }
+        .kv { width:100%; margin:8px 0; table-layout: fixed; }
+        .kv td { vertical-align:top; padding:1px 4px; font-size:13px; word-wrap: break-word; overflow-wrap: break-word; }
         .bold { font-weight:700; }
 
         .signature {
@@ -111,7 +117,7 @@
         <tr>
             <td>Nama</td>
             <td>:</td>
-            <td><strong>{{ $surat->approver_name ?? 'Drs. H. AHMAD SUHARDI, M.Si' }}</strong></td>
+            <td><strong>{{ $surat->approver_name ?? 'Dheny Kurniawan, S.STP' }}</strong></td>
         </tr>
         <tr>
             <td>Jabatan</td>
@@ -128,43 +134,43 @@
     {{-- Type-specific detail table --}}
     @php $type = $surat->jenis_surat; $d = (array)($surat->data ?? []); @endphp
     @if(in_array($type, ['ktp','surat_kelahiran','sktm','domisili']))
-        <table class="kv" style="margin-top: 15px; border: 1px solid #ddd; border-collapse: collapse;">
+        <table class="kv" style="margin-top: 15px; border: 1px solid #ddd; border-collapse: collapse; table-layout: fixed; width: 100%;">
             <tr style="background-color: #f8f9fa;">
                 <td colspan="3" style="padding: 8px; font-weight: 600; border: 1px solid #ddd; text-align: center;">DATA PEMOHON</td>
             </tr>
             @if(in_array($type, ['ktp','sktm','domisili']))
                 <tr>
-                    <td style="width:25%; padding: 6px; border: 1px solid #ddd;">Nama Lengkap</td>
+                    <td style="width:25%; padding: 6px; border: 1px solid #ddd; word-wrap: break-word;">Nama Lengkap</td>
                     <td style="width:2%; padding: 6px; border: 1px solid #ddd;">:</td>
-                    <td style="padding: 6px; border: 1px solid #ddd;">{{ $d['nama_lengkap'] ?? $d['nama'] ?? '-' }}</td>
+                    <td style="padding: 6px; border: 1px solid #ddd; word-wrap: break-word;">{{ $d['nama_lengkap'] ?? $d['nama'] ?? '-' }}</td>
                 </tr>
                 <tr>
-                    <td style="padding: 6px; border: 1px solid #ddd;">Nomor Induk Kependudukan</td>
+                    <td style="padding: 6px; border: 1px solid #ddd; word-wrap: break-word;">Nomor Induk Kependudukan</td>
                     <td style="padding: 6px; border: 1px solid #ddd;">:</td>
-                    <td style="padding: 6px; border: 1px solid #ddd;">{{ $d['nik'] ?? '-' }}</td>
+                    <td style="padding: 6px; border: 1px solid #ddd; word-wrap: break-word;">{{ $d['nik'] ?? '-' }}</td>
                 </tr>
                 <tr>
-                    <td style="padding: 6px; border: 1px solid #ddd;">Alamat Lengkap</td>
+                    <td style="padding: 6px; border: 1px solid #ddd; word-wrap: break-word;">Alamat Lengkap</td>
                     <td style="padding: 6px; border: 1px solid #ddd;">:</td>
-                    <td style="padding: 6px; border: 1px solid #ddd;">{{ $d['alamat'] ?? $d['alamat_lengkap'] ?? '-' }}</td>
+                    <td style="padding: 6px; border: 1px solid #ddd; word-wrap: break-word;">{{ $d['alamat'] ?? $d['alamat_lengkap'] ?? '-' }}</td>
                 </tr>
             @endif
 
             @if($type == 'surat_kelahiran')
                 <tr>
-                    <td style="padding: 6px; border: 1px solid #ddd;">Nama Bayi</td>
+                    <td style="padding: 6px; border: 1px solid #ddd; word-wrap: break-word;">Nama Bayi</td>
                     <td style="padding: 6px; border: 1px solid #ddd;">:</td>
-                    <td style="padding: 6px; border: 1px solid #ddd;">{{ $d['nama_bayi'] ?? '-' }}</td>
+                    <td style="padding: 6px; border: 1px solid #ddd; word-wrap: break-word;">{{ $d['nama_bayi'] ?? '-' }}</td>
                 </tr>
                 <tr>
-                    <td style="padding: 6px; border: 1px solid #ddd;">Tanggal Lahir</td>
+                    <td style="padding: 6px; border: 1px solid #ddd; word-wrap: break-word;">Tanggal Lahir</td>
                     <td style="padding: 6px; border: 1px solid #ddd;">:</td>
-                    <td style="padding: 6px; border: 1px solid #ddd;">{{ $d['tanggal_lahir'] ?? '-' }}</td>
+                    <td style="padding: 6px; border: 1px solid #ddd; word-wrap: break-word;">{{ $d['tanggal_lahir'] ?? '-' }}</td>
                 </tr>
                 <tr>
-                    <td style="padding: 6px; border: 1px solid #ddd;">Tempat Lahir</td>
+                    <td style="padding: 6px; border: 1px solid #ddd; word-wrap: break-word;">Tempat Lahir</td>
                     <td style="padding: 6px; border: 1px solid #ddd;">:</td>
-                    <td style="padding: 6px; border: 1px solid #ddd;">{{ $d['tempat_lahir'] ?? '-' }}</td>
+                    <td style="padding: 6px; border: 1px solid #ddd; word-wrap: break-word;">{{ $d['tempat_lahir'] ?? '-' }}</td>
                 </tr>
             @endif
         </table>

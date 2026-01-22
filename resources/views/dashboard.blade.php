@@ -16,7 +16,7 @@
         </div>
         <div class="row align-items-center position-relative" style="z-index: 2;">
             <div class="col-lg-8">
-                <h2 class="fw-bold mb-2" style="font-size: 2.5rem;">Selamat Datang, {{ auth()->user()->name }}! 👋</h2>
+                <h2 class="fw-bold mb-2" style="font-size: 2.5rem;">Selamat Datang, {{ auth()->user()->name }}! </h2>
                 <p class="mb-0 fs-5 opacity-90">Sistem Informasi Desa Digital — Kelola data dan layanan desa dengan mudah dan transparan.</p>
             </div>
             <div class="col-lg-4 text-lg-end">

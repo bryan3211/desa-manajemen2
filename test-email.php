@@ -19,7 +19,7 @@ echo "
 
 ";
 
-// Check environment variables
+// Periksa variabel lingkungan
 echo "📋 Checking Configuration:\n";
 echo "─ MAIL_MAILER: " . env('MAIL_MAILER') . "\n";
 echo "─ MAIL_HOST: " . env('MAIL_HOST') . "\n";
@@ -30,7 +30,7 @@ echo "─ MAIL_FROM_ADDRESS: " . env('MAIL_FROM_ADDRESS') . "\n";
 
 echo "\n🔐 Security Check:\n";
 
-// Validate configuration
+// Validasi konfigurasi
 $errors = [];
 
 if (!env('MAIL_USERNAME') || env('MAIL_USERNAME') === 'your-email@gmail.com') {
@@ -58,7 +58,7 @@ echo "✅ Konfigurasi dasar sudah benar\n";
 echo "\n📧 Mengirim Email Test...\n";
 
 try {
-    // Try to send test email
+    // Coba kirim email test
     $testEmail = env('MAIL_FROM_ADDRESS');
     
     Mail::raw('Test email dari Desa Management. Jika Anda menerima ini, konfigurasi email berhasil! ✅', function ($message) use ($testEmail) {

@@ -24,14 +24,14 @@
                         <div class="col-md-6 mb-4">
                             <label class="form-label fw-bold" style="color: #1f2937;">Nama Pemohon <span class="text-danger">*</span></label>
                             <input type="text" name="nama_pemohon" class="form-control rounded-3" style="border: 2px solid #e5e7eb;" 
-                                value="{{ old('nama_pemohon', $biodata->nama_lengkap ?? '') }}" placeholder="Nama lengkap" readonly required>
+                                value="{{ old('nama_pemohon') }}" placeholder="Nama lengkap" required>
                             @error('nama_pemohon') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
 
                         <div class="col-md-6 mb-4">
                             <label class="form-label fw-bold" style="color: #1f2937;">NIK Pemohon</label>
                             <input type="text" name="nik_pemohon" class="form-control rounded-3" style="border: 2px solid #e5e7eb;" 
-                                value="{{ old('nik_pemohon', $biodata->nik ?? '') }}" placeholder="16 digit NIK" maxlength="16" readonly>
+                                value="{{ old('nik_pemohon') }}" placeholder="16 digit NIK" maxlength="16">
                             @error('nik_pemohon') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>

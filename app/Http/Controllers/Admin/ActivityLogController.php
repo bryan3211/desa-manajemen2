@@ -12,17 +12,17 @@ class ActivityLogController extends Controller
     {
         $query = ActivityLog::with('user')->latest();
 
-        // Filter by action
+        // Filter berdasarkan aksi
         if ($request->filled('action')) {
             $query->where('action', $request->action);
         }
 
-        // Filter by user
+        // Filter berdasarkan pengguna
         if ($request->filled('user_id')) {
             $query->where('user_id', $request->user_id);
         }
 
-        // Filter by date range
+        // Filter berdasarkan rentang tanggal
         if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->date_from);
         }
@@ -31,17 +31,17 @@ class ActivityLogController extends Controller
             $query->whereDate('created_at', '<=', $request->date_to);
         }
 
-        // Search by description
+        // Cari berdasarkan deskripsi
         if ($request->filled('search')) {
             $query->where('description', 'like', '%' . $request->search . '%');
         }
 
         $activityLogs = $query->paginate(20);
 
-        // Get unique actions for filter dropdown
+        // Dapatkan aksi unik untuk dropdown filter
         $actions = ActivityLog::distinct('action')->pluck('action');
 
-        // Get users for filter dropdown
+        // Dapatkan pengguna untuk dropdown filter
         $users = \App\Models\User::select('id', 'name')->get();
 
         return view('admin.activity-logs.index', compact('activityLogs', 'actions', 'users'));

@@ -27,13 +27,6 @@
     </a>
 </li>
 
-<li class="pc-item {{ request()->is('admin/activity-logs*') ? 'active' : '' }}">
-    <a href="{{ route('admin.activity-logs.index') }}" class="pc-link">
-        <span class="pc-micon"><i class="ti ti-history"></i></span>
-        <span class="pc-mtext">Log Aktivitas</span>
-    </a>
-</li>
-
 <li class="pc-item-divider my-2"></li>
 
 <li class="pc-item">

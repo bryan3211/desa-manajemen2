@@ -233,8 +233,12 @@
                                         <div class="card-header">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <h5 class="mb-0">Data Biodata Lengkap</h5>
-                                                <span
-                                                    class="badge bg-{{ $biodata->status_badge }}">{{ $biodata->status_label }}</span>
+                                                <div>
+                                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editBiodataModal">
+                                                        <i class="ti ti-edit me-1"></i>Edit
+                                                    </button>
+                                                    <span class="badge bg-{{ $biodata->status_badge }}">{{ $biodata->status_label }}</span>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="card-body">
@@ -333,6 +337,148 @@
                                                         </a>
                                                     </div>
                                                 @endif
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal Edit Biodata -->
+                                    <div class="modal fade" id="editBiodataModal" tabindex="-1" aria-labelledby="editBiodataModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="editBiodataModalLabel">Edit Biodata</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div id="editBiodataAlert"></div>
+                                                    <form id="editBiodataForm">
+                                                        @csrf
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">NIK</label>
+                                                                    <input type="text" class="form-control" name="nik" value="{{ $biodata->nik ?? '' }}" readonly>
+                                                                    <small class="text-muted">NIK tidak dapat diubah</small>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">Nama Lengkap</label>
+                                                                    <input type="text" class="form-control" name="nama_lengkap" value="{{ $biodata->nama_lengkap ?? '' }}" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">Tempat Lahir</label>
+                                                                    <input type="text" class="form-control" name="tempat_lahir" value="{{ $biodata->tempat_lahir ?? '' }}" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">Tanggal Lahir</label>
+                                                                    <input type="date" class="form-control" name="tanggal_lahir" value="{{ $biodata->tanggal_lahir ? $biodata->tanggal_lahir->format('Y-m-d') : '' }}" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">Jenis Kelamin</label>
+                                                                    <select class="form-control" name="jenis_kelamin" required>
+                                                                        <option value="">Pilih Jenis Kelamin</option>
+                                                                        <option value="L" {{ ($biodata->jenis_kelamin ?? '') == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                                                                        <option value="P" {{ ($biodata->jenis_kelamin ?? '') == 'P' ? 'selected' : '' }}>Perempuan</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">Agama</label>
+                                                                    <select class="form-control" name="agama" required>
+                                                                        <option value="">Pilih Agama</option>
+                                                                        <option value="Islam" {{ ($biodata->agama ?? '') == 'Islam' ? 'selected' : '' }}>Islam</option>
+                                                                        <option value="Kristen" {{ ($biodata->agama ?? '') == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                                                                        <option value="Katolik" {{ ($biodata->agama ?? '') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                                                                        <option value="Hindu" {{ ($biodata->agama ?? '') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                                                                        <option value="Buddha" {{ ($biodata->agama ?? '') == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                                                                        <option value="Konghucu" {{ ($biodata->agama ?? '') == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">Status Perkawinan</label>
+                                                                    <select class="form-control" name="status_perkawinan" required>
+                                                                        <option value="">Pilih Status</option>
+                                                                        <option value="Belum Kawin" {{ ($biodata->status_perkawinan ?? '') == 'Belum Kawin' ? 'selected' : '' }}>Belum Kawin</option>
+                                                                        <option value="Kawin" {{ ($biodata->status_perkawinan ?? '') == 'Kawin' ? 'selected' : '' }}>Kawin</option>
+                                                                        <option value="Cerai Hidup" {{ ($biodata->status_perkawinan ?? '') == 'Cerai Hidup' ? 'selected' : '' }}>Cerai Hidup</option>
+                                                                        <option value="Cerai Mati" {{ ($biodata->status_perkawinan ?? '') == 'Cerai Mati' ? 'selected' : '' }}>Cerai Mati</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">Pekerjaan</label>
+                                                                    <input type="text" class="form-control" name="pekerjaan" value="{{ $biodata->pekerjaan ?? '' }}" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">No. HP</label>
+                                                                    <input type="text" class="form-control" name="no_hp" value="{{ $biodata->no_hp ?? '' }}" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">Email</label>
+                                                                    <input type="email" class="form-control" name="email" value="{{ $biodata->email ?? '' }}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <h6 class="mt-4 mb-3">Alamat</h6>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">Alamat Lengkap</label>
+                                                                    <textarea class="form-control" name="alamat_lengkap" rows="3" required>{{ $biodata->alamat_lengkap ?? '' }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">RT</label>
+                                                                    <input type="text" class="form-control" name="rt" value="{{ $biodata->rt ?? '' }}" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">RW</label>
+                                                                    <input type="text" class="form-control" name="rw" value="{{ $biodata->rw ?? '' }}" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">Desa/Kelurahan</label>
+                                                                    <input type="text" class="form-control" name="desa_kelurahan" value="{{ $biodata->desa_kelurahan ?? '' }}" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">Kecamatan</label>
+                                                                    <input type="text" class="form-control" name="kecamatan" value="{{ $biodata->kecamatan ?? '' }}" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">Kabupaten/Kota</label>
+                                                                    <input type="text" class="form-control" name="kabupaten_kota" value="{{ $biodata->kabupaten_kota ?? '' }}" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                    <button type="button" class="btn btn-primary" id="submitEditBiodataBtn">Simpan Perubahan</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -894,6 +1040,79 @@
             `;
             
             const container = document.getElementById(containerId);
+            const existingAlert = container.querySelector('.alert');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+            container.insertBefore(alertDiv, container.firstChild);
+        }
+
+        // EDIT BIODATA FUNCTIONALITY
+        // ==========================================
+        
+        const editBiodataForm = document.getElementById('editBiodataForm');
+        const submitEditBiodataBtn = document.getElementById('submitEditBiodataBtn');
+
+        // Submit edit biodata form
+        if (submitEditBiodataBtn) {
+            submitEditBiodataBtn.addEventListener('click', function() {
+                const formData = new FormData(editBiodataForm);
+                const biodataData = Object.fromEntries(formData.entries());
+
+                // Show loading state
+                submitEditBiodataBtn.disabled = true;
+                submitEditBiodataBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan...';
+
+                fetch('{{ route("profile.update.biodata") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': getCsrfToken(),
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(biodataData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showEditBiodataAlert('success', data.message);
+                        // Close modal after success
+                        setTimeout(() => {
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('editBiodataModal'));
+                            modal.hide();
+                            // Reload page to show updated data
+                            window.location.reload();
+                        }, 1500);
+                    } else {
+                        let errorMessage = data.message || 'Gagal memperbarui biodata';
+                        if (data.errors) {
+                            errorMessage += '<br><small>' + Object.values(data.errors).flat().join('<br>') + '</small>';
+                        }
+                        showEditBiodataAlert('error', errorMessage);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showEditBiodataAlert('error', 'Terjadi kesalahan. Silakan coba lagi.');
+                })
+                .finally(() => {
+                    submitEditBiodataBtn.disabled = false;
+                    submitEditBiodataBtn.innerHTML = 'Simpan Perubahan';
+                });
+            });
+        }
+
+        // Show edit biodata alert
+        function showEditBiodataAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+            alertDiv.role = 'alert';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            
+            const container = document.getElementById('editBiodataAlert');
             const existingAlert = container.querySelector('.alert');
             if (existingAlert) {
                 existingAlert.remove();

@@ -45,12 +45,12 @@ class EmailVerificationTest extends TestCase
             'is_verified' => false,
         ]);
 
-        // First OTP sent
+        // OTP pertama dikirim
         $this->actingAs($user)
             ->postJson('/send-otp-auth')
             ->assertJson(['success' => true]);
 
-        // Try to resend immediately
+        // Coba kirim ulang segera
         $this->actingAs($user)
             ->postJson('/send-otp-auth')
             ->assertJson([
@@ -88,7 +88,7 @@ class EmailVerificationTest extends TestCase
             'message' => 'Email berhasil diverifikasi!'
         ]);
 
-        // Check user is verified
+        // Periksa pengguna sudah diverifikasi
         $this->assertTrue($user->fresh()->is_verified);
     }
 
@@ -119,7 +119,7 @@ class EmailVerificationTest extends TestCase
             'message' => 'Kode OTP salah.'
         ]);
 
-        // Check user is not verified
+        // Periksa pengguna belum diverifikasi
         $this->assertFalse($user->fresh()->is_verified);
     }
 
@@ -150,7 +150,7 @@ class EmailVerificationTest extends TestCase
             'message' => 'Kode OTP sudah kedaluwarsa.'
         ]);
 
-        // Check user is not verified
+        // Periksa pengguna belum diverifikasi
         $this->assertFalse($user->fresh()->is_verified);
     }
 

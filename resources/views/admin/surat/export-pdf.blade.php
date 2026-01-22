@@ -219,7 +219,7 @@
         <div style="overflow:visible;">
             <p style="margin-bottom: 8px;">{{ $surat->place ?? 'Waru' }}, {{ $surat->signed_at ? $surat->signed_at->format('d F Y') : now()->format('d F Y') }}</p>
             <p style="margin-bottom: 2px; font-weight: 600;">{{ $surat->approver_title ?? 'Lurah Kelurahan Medaeng' }}</p>
-            <p style="margin-top: 60px; margin-bottom: 2px;" class="sign-name">{{ $surat->approver_name ?? 'Drs. H. AHMAD SUHARDI, M.Si' }}</p>
+            <p style="margin-top: 60px; margin-bottom: 2px;" class="sign-name">{{ $surat->approver_name ?? 'Dheny Kurniawan, S.STP' }}</p>
             <p style="margin-top: 2px; font-size: 10px;">NIP. {{ $surat->approver_nip ?? '19751215 199803 1 001' }}</p>
         </div>
 

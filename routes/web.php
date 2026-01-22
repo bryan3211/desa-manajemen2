@@ -44,12 +44,12 @@ Route::middleware(['auth', 'web'])->prefix('api')->group(function () {
         return response()->json(['success' => false], 404);
     });
 
-    // User: Get recent updates
+    // Pengguna: Dapatkan pembaruan terkini
     Route::get('/user/recent-updates', [DashboardController::class, 'getRecentUpdates'])
         ->middleware('cekRole:user')
         ->name('api.user.recent-updates');
 
-    // Admin: Get recent updates
+    // Admin: Dapatkan pembaruan terkini
     Route::get('/admin/recent-updates', [DashboardController::class, 'getAdminRecentUpdates'])
         ->middleware('cekRole:admin')
         ->name('api.admin.recent-updates');
@@ -59,7 +59,7 @@ Route::middleware(['auth', 'web'])->prefix('api')->group(function () {
 // PUBLIC API ROUTES (Guest)
 // ============================================
 Route::prefix('api')->group(function () {
-    // Get real-time statistics
+    // Dapatkan statistik real-time
     Route::get('/statistics', [DashboardController::class, 'getStatistics'])
         ->name('api.statistics');
 
@@ -111,12 +111,12 @@ Route::middleware(['guest'])->group(function () {
 
     // Lupa Password
     Route::get('/forgot-password', [AuthController::class, 'showRequestForm'])->name('forgot_password.email_form');
-    // Send OTP for password reset
+    // Kirim OTP untuk reset password
     Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('forgot_password.send_link');
     // Password reset - verify OTP first
     Route::get('/password-reset/verify', [AuthController::class, 'showVerifyResetForm'])->name('password.verify.form');
     Route::post('/password-reset/verify', [AuthController::class, 'verifyResetOtp'])->name('password.verify');
-    // Password reset form (accessible only after OTP verification)
+    // Formulir reset password (dapat diakses hanya setelah verifikasi OTP)
     Route::get('/password-reset', [AuthController::class, 'showResetForm'])->name('password.reset');
     Route::post('/password-reset', [AuthController::class, 'resetPassword'])->name('password.update');
 });
@@ -158,6 +158,7 @@ Route::middleware(['auth', 'web'])->group(function () {
     // Profile Security & Password
     Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update.password');
     Route::post('/profile/update-security', [ProfileController::class, 'updateSecurity'])->name('profile.update.security');
+    Route::post('/profile/update-biodata', [ProfileController::class, 'updateBiodata'])->name('profile.update.biodata');
     Route::get('/profile/security-info', [ProfileController::class, 'getSecurityInfo'])->name('profile.security.info');
 
     // Verifikasi Email untuk user yang sudah login
@@ -171,7 +172,7 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::middleware(['cekRole:admin'])->group(function () {
         Route::get('/verifikasi', fn() => view('admin.verifikasi'))->name('admin.verifikasi');
 
-        // Printable view for surat (Admin)
+        // Tampilan cetak untuk surat (Admin)
         Route::get('/admin/surat/{id}/print', [SuratController::class, 'printView'])->name('admin.surat.print');
         // Preview with edited body (opens printable view with temporary content)
         Route::post('/admin/surat/{id}/preview', [SuratController::class, 'preview'])->name('admin.surat.preview');
@@ -179,7 +180,7 @@ Route::middleware(['auth', 'web'])->group(function () {
         Route::post('/admin/surat/{id}/save-body', [SuratController::class, 'saveBody'])->name('admin.surat.save_body');
         Route::get('/admin/surat/export-all', [SuratController::class, 'exportAllPdf'])->name('admin.surat.export_all');
 
-        // Public verification link for digital signature QR
+        // Tautan verifikasi publik untuk QR tanda tangan digital
         // Route::get('/surat/verify', [\App\Http\Controllers\SuratController::class, 'verifySignature'])->name('surat.verify');
         // QR Code verification endpoint (similar to external system format)
         // Route::get('/pengajuan/ttd', [\App\Http\Controllers\SuratController::class, 'verifyQrCode'])->name('pengajuan.ttd');
@@ -254,6 +255,9 @@ Route::middleware(['auth', 'web'])->group(function () {
         Route::get('/surat/create/{type}', [\App\Http\Controllers\SuratController::class, 'create'])->name('user.surat.create.type');
         Route::post('/surat', [\App\Http\Controllers\SuratController::class, 'store'])->name('user.surat.store');
         Route::get('/surat/{id}', [\App\Http\Controllers\SuratController::class, 'show'])->name('user.surat.show');
+        Route::get('/surat/{id}/edit', [\App\Http\Controllers\SuratController::class, 'edit'])->name('user.surat.edit');
+        Route::put('/surat/{id}', [\App\Http\Controllers\SuratController::class, 'update'])->name('user.surat.update');
+        Route::delete('/surat/{id}', [\App\Http\Controllers\SuratController::class, 'destroy'])->name('user.surat.destroy');
         Route::get('/surat/{id}/print', [\App\Http\Controllers\SuratController::class, 'userPrintView'])->name('user.surat.print');
 
         // Pengaduan User
